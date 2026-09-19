@@ -1,0 +1,19 @@
+{
+  "schema_version": "1",
+  "domain": "金矿博物馆展陈一致性",
+  "required_fields": [
+    "object_ref",
+    "object_kind",
+    "source_ref",
+    "display_ref",
+    "label_revision",
+    "effective_from"
+  ],
+  "time_format": "ISO 8601 with offset",
+  "sample": {
+    "object_ref": "OBJECT-DEMO",
+    "object_kind": "artifact",
+    "display_ref": "CASE-A",
+    "label_revision": 2
+  }
+}
