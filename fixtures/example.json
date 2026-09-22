@@ -1,6 +1,63 @@
 {
-  "object_ref": "OBJECT-DEMO",
-  "object_kind": "artifact",
-  "display_ref": "CASE-A",
-  "label_revision": 2
+  "scenario": "开馆前发现真品金条送修",
+  "effective_now": "2026-09-22T09:30:00+08:00",
+  "surfaces": [
+    { "surface_ref": "CASE-GOLD-1", "surface_kind": "case", "name": "夹皮沟金脉展柜" },
+    { "surface_ref": "DOC-GOLD-1", "surface_kind": "document_slot", "name": "开采文献位" },
+    { "surface_ref": "SCREEN-GOLD-1", "surface_kind": "digital_page", "name": "触摸屏·淘金牛脉" }
+  ],
+  "objects": [
+    {
+      "object_ref": "OBJ-BAR-REAL",
+      "object_kind": "artifact",
+      "title": "夹皮沟金条（真品）",
+      "source_ref": "sha256:9f2c1a",
+      "dating_statement": "清末民初",
+      "dating_basis": "馆藏旧账与矿口传承",
+      "custody_location": "金库 B-12"
+    },
+    {
+      "object_ref": "OBJ-BAR-REPRO",
+      "object_kind": "reproduction",
+      "title": "金条复制件",
+      "source_ref": "REF:REPRO-2026-03",
+      "custody_location": "复制件库房 R-2"
+    },
+    {
+      "object_ref": "OBJ-DOC-LEDGER",
+      "object_kind": "document",
+      "title": "开采账簿（民国）",
+      "source_ref": "REF:ARCHIVE-77",
+      "custody_location": "文献柜 D-5"
+    },
+    {
+      "object_ref": "OBJ-DIGI-STORY",
+      "object_kind": "digital",
+      "title": "淘金牛脉数字影像",
+      "source_ref": "sha256:41be77",
+      "custody_location": "数字资产库 DAM"
+    }
+  ],
+  "custody_event": {
+    "object_ref": "OBJ-BAR-REAL",
+    "event_type": "repair_out",
+    "occurred_at": "2026-09-22T06:30:00+08:00",
+    "location": "省文保修复中心",
+    "reason": "表面稳定处理"
+  },
+  "substitute_placement": {
+    "surface_ref": "CASE-GOLD-1",
+    "object_ref": "OBJ-BAR-REPRO",
+    "replaces_placement": 1,
+    "narrative_ref": "NARR-GOLD-RUSH",
+    "starts_at": "2026-09-22T08:30:00+08:00",
+    "approval_status": "approved"
+  },
+  "dating_correction_in_review": {
+    "correction_ref": "CORR-BAR-DATE-1",
+    "object_ref": "OBJ-BAR-REAL",
+    "proposed_statement": "清代中期（乾隆年间）",
+    "proposed_basis": "新见矿税档案与成分检测",
+    "status": "submitted"
+  }
 }

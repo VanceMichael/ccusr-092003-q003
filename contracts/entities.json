@@ -1,19 +1,68 @@
 {
-  "schema_version": "1",
+  "schema_version": "2",
   "domain": "金矿博物馆展陈一致性",
-  "required_fields": [
-    "object_ref",
-    "object_kind",
-    "source_ref",
-    "display_ref",
-    "label_revision",
-    "effective_from"
-  ],
   "time_format": "ISO 8601 with offset",
+  "time_rule": "所有业务时间必须带偏移量（如 2026-09-22T09:00:00+08:00），朴素本地时间一律拒绝；区间为半开 [starts_at, ends_at)",
+  "reference_rule": "对外只使用引用编号（object_ref 等），不交换真实身份信息；原始材料只保存受控引用（REF:）或 sha256: 摘要",
+  "enums": {
+    "object_kind": ["artifact", "reproduction", "document", "digital"],
+    "surface_kind": ["case", "document_slot", "digital_page"],
+    "custody_event_type": ["loan_out", "repair_out", "return"],
+    "site_eligibility": ["on_site", "away"],
+    "review_status": ["draft", "submitted", "approved", "rejected"],
+    "placement_approval": ["pending", "approved", "rejected"]
+  },
+  "entities": {
+    "exhibition_object": {
+      "required_fields": ["object_ref", "object_kind", "title", "source_ref", "custody_location"],
+      "optional_fields": ["source_note", "dating_statement", "dating_basis"],
+      "derived_fields": ["site_eligibility", "registered_location", "dating_status", "initial_dating_statement", "initial_dating_basis"],
+      "note": "initial_dating_* 为建账初值永不改写；dating_* 仅在更正获批后更新"
+    },
+    "custody_event": {
+      "required_fields": ["object_ref", "event_type", "location"],
+      "optional_fields": ["occurred_at", "reason"],
+      "effect": "loan_out/repair_out 立即将 site_eligibility 置为 away 并封口该展品当前开放排期；return 恢复 on_site"
+    },
+    "dating_correction": {
+      "required_fields": ["correction_ref", "object_ref", "proposed_statement"],
+      "optional_fields": ["proposed_basis", "rationale", "created_by"],
+      "workflow": "draft -> submitted -> approved|rejected；approved 前观众始终读旧口径"
+    },
+    "label": {
+      "required_fields": ["label_ref", "object_ref", "content"],
+      "optional_fields": ["editor"],
+      "derived_fields": ["revision"],
+      "workflow": "draft -> submitted -> approved|rejected；revision 单调递增，已批准记录不可变，新版发布时旧版记 superseded_at"
+    },
+    "narrative": {
+      "required_fields": ["narrative_ref", "title"],
+      "optional_fields": ["description"]
+    },
+    "display_surface": {
+      "required_fields": ["surface_ref", "surface_kind", "name"]
+    },
+    "placement": {
+      "required_fields": ["surface_ref", "object_ref"],
+      "optional_fields": ["label_ref", "narrative_ref", "starts_at", "ends_at", "approval_status", "replaces_placement", "requested_by"],
+      "rules": [
+        "approved 排期在同一 surface 上不得时间重叠",
+        "away 状态的真品不得进入当前排期；替代展项 pending 获批后才对观众可见",
+        "replaces_placement 指向原排期时自动继承其 narrative_ref，保证叙事不断线",
+        "替代展项获批时，同展面冲突的开放旧排期在其 starts_at 封口"
+      ]
+    }
+  },
+  "read_views": {
+    "GET /public/now": "观众视图：仅当前有效的 approved 排期、已发布年代口径与当前展签",
+    "GET /internal/as-of?at=": "内部复原：给定带偏移量的历史时刻，复原当日展柜/文献位/数字页面与展品状态",
+    "GET /v1/review-queue": "所有 submitted 更正、展签与 pending 替代展项"
+  },
   "sample": {
     "object_ref": "OBJECT-DEMO",
     "object_kind": "artifact",
     "display_ref": "CASE-A",
-    "label_revision": 2
+    "label_revision": 2,
+    "effective_from": "2026-09-21T10:00:00+08:00"
   }
 }
