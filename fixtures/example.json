@@ -1,6 +1,168 @@
 {
-  "object_ref": "OBJECT-DEMO",
-  "object_kind": "artifact",
-  "display_ref": "CASE-A",
-  "label_revision": 2
+  "description": "夹皮沟黄金博物馆开馆前演示场景（不含真实身份信息）：金条送修、替代展项接续、触摸屏调整、展签更正在审",
+  "steps": [
+    {
+      "op": "register_object",
+      "body": {
+        "object_ref": "GOLD-BAR-001",
+        "object_kind": "artifact",
+        "title": "夹皮沟金条（清末）",
+        "source_ref": "ARCHIVE-LEDGER-1889#f42",
+        "provenance_digest": "sha256:9f2c7a1e",
+        "period": "清末",
+        "dating_evidence": "矿务总局1889年造册记录",
+        "storage_location": "金库 A-12"
+      }
+    },
+    {
+      "op": "register_object",
+      "body": {
+        "object_ref": "REPLICA-BAR-001",
+        "object_kind": "replica",
+        "title": "夹皮沟金条（复制件）",
+        "period": "现代复制",
+        "storage_location": "复制件库 B-03"
+      }
+    },
+    {
+      "op": "register_object",
+      "body": {
+        "object_ref": "DOC-LEDGER-1889",
+        "object_kind": "document",
+        "title": "1889 年矿务总局造册扫描件",
+        "source_ref": "ARCHIVE-LEDGER-1889",
+        "period": "1889"
+      }
+    },
+    {
+      "op": "register_object",
+      "body": {
+        "object_ref": "IMG-MINE-1900",
+        "object_kind": "digital_image",
+        "title": "夹皮沟金矿早期影像"
+      }
+    },
+    {
+      "op": "create_narrative",
+      "body": {
+        "narrative_ref": "NARR-GOLD-RUSH",
+        "title": "淘金热与官矿",
+        "summary": "清末夹皮沟金矿开采与上缴叙事"
+      }
+    },
+    {
+      "op": "create_channel",
+      "body": {
+        "channel_ref": "CASE-GOLD-01",
+        "channel_type": "case",
+        "name": "金器专柜"
+      }
+    },
+    {
+      "op": "create_channel",
+      "body": {
+        "channel_ref": "SCREEN-HALL-02",
+        "channel_type": "touchscreen",
+        "name": "二号厅触摸屏",
+        "location": "二号厅入口左侧",
+        "title": "金矿年表",
+        "config_json": "{\"orientation\":\"landscape\"}",
+        "valid_from": "2026-09-20T09:00:00+08:00"
+      }
+    },
+    {
+      "op": "create_channel",
+      "body": {
+        "channel_ref": "PAGE-LEDGER",
+        "channel_type": "digital_page",
+        "name": "造册文献数字页"
+      }
+    },
+    {
+      "op": "propose_and_publish_label",
+      "object_ref": "GOLD-BAR-001",
+      "body": {
+        "content": "清末夹皮沟官矿上缴金条，年代约 1889 年。",
+        "research_note": "依据造册记录初步断代",
+        "evidence_ref": "ARCHIVE-LEDGER-1889#f42"
+      },
+      "effective_from": "2026-09-20T08:00:00+08:00"
+    },
+    {
+      "op": "propose_and_publish_label",
+      "object_ref": "REPLICA-BAR-001",
+      "body": {
+        "content": "按馆藏金条 1:1 复制，供真品离场期间展示。"
+      },
+      "effective_from": "2026-09-20T08:00:00+08:00"
+    },
+    {
+      "op": "propose_and_publish_label",
+      "object_ref": "DOC-LEDGER-1889",
+      "body": {
+        "content": "矿务总局 1889 年造册，记录金条上缴与成色。"
+      },
+      "effective_from": "2026-09-20T08:00:00+08:00"
+    },
+    {
+      "op": "full_placement",
+      "body": {
+        "placement_ref": "PL-GOLD-CASE",
+        "narrative_ref": "NARR-GOLD-RUSH",
+        "channel_ref": "CASE-GOLD-01",
+        "object_ref": "GOLD-BAR-001"
+      },
+      "valid_from": "2026-09-20T09:00:00+08:00"
+    },
+    {
+      "op": "full_placement",
+      "body": {
+        "placement_ref": "PL-DOC-PAGE",
+        "narrative_ref": "NARR-GOLD-RUSH",
+        "channel_ref": "PAGE-LEDGER",
+        "object_ref": "DOC-LEDGER-1889"
+      },
+      "valid_from": "2026-09-20T09:00:00+08:00"
+    },
+    {
+      "op": "status_event",
+      "object_ref": "GOLD-BAR-001",
+      "body": {
+        "event_type": "under_repair",
+        "occurred_at": "2026-09-21T08:00:00+08:00",
+        "note": "表面锈蚀处理，送修复室"
+      }
+    },
+    {
+      "op": "full_placement",
+      "body": {
+        "placement_ref": "PL-REPLICA-CASE",
+        "narrative_ref": "NARR-GOLD-RUSH",
+        "channel_ref": "CASE-GOLD-01",
+        "object_ref": "REPLICA-BAR-001",
+        "substitute_for_ref": "GOLD-BAR-001",
+        "note": "真品送修期间接替专柜"
+      },
+      "valid_from": "2026-09-21T08:30:00+08:00"
+    },
+    {
+      "op": "add_layout",
+      "channel_ref": "SCREEN-HALL-02",
+      "body": {
+        "location": "二号厅出口右侧",
+        "title": "金矿年表（修订版）",
+        "config_json": "{\"orientation\":\"portrait\"}",
+        "valid_from": "2026-09-21T09:00:00+08:00"
+      }
+    },
+    {
+      "op": "propose_label",
+      "object_ref": "GOLD-BAR-001",
+      "body": {
+        "content": "据新见矿务档案，金条年代或可推至 1885 年。",
+        "research_note": "新发现档案尚待学术委员会确认",
+        "evidence_ref": "ARCHIVE-NEW-1885"
+      }
+    }
+  ]
 }

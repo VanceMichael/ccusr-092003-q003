@@ -1,15 +1,44 @@
 {
-  "schema_version": "1",
+  "schema_version": "2",
   "domain": "金矿博物馆展陈一致性",
-  "required_fields": [
-    "object_ref",
-    "object_kind",
-    "source_ref",
-    "display_ref",
-    "label_revision",
-    "effective_from"
-  ],
   "time_format": "ISO 8601 with offset",
+  "storage_note": "库内归一化为 UTC；有效期采用半开区间 [valid_from, valid_to)",
+  "object_kinds": ["artifact", "replica", "document", "digital_image"],
+  "channel_types": ["case", "touchscreen", "digital_page"],
+  "status_events": ["in_house", "on_loan", "under_repair", "loan_returned", "repair_returned"],
+  "lifecycle": {
+    "label_revision": ["in_review", "published", "superseded"],
+    "placement": ["proposed", "approved", "rejected", "published", "withdrawn"]
+  },
+  "entities": {
+    "collection_object": {
+      "required": ["object_ref", "object_kind", "title"],
+      "optional": ["source_ref", "provenance_digest", "period", "dating_evidence", "storage_location", "restoration_status"]
+    },
+    "status_event": {
+      "required": ["event_type", "occurred_at"],
+      "rule": "artifact 记录 on_loan/under_repair 时，立即关闭其所有当前在场布置（valid_to=事件时间）"
+    },
+    "label_revision": {
+      "required": ["content"],
+      "optional": ["research_note", "evidence_ref"],
+      "rule": "append-only；in_review 不对观众可见；publish 后不可变；新发布版封边旧版（superseded）"
+    },
+    "placement": {
+      "required": ["placement_ref", "narrative_ref", "channel_ref", "object_ref"],
+      "optional": ["substitute_for_ref", "note"],
+      "rule": "必须 proposed -> approved -> published；substitute 须指向同一叙事下曾发布的主展项；artifact 处于 on_loan/under_repair 时禁止发布"
+    },
+    "channel_layout": {
+      "required": ["valid_from"],
+      "optional": ["title", "location", "config_json"],
+      "rule": "版本化布局，新发布版封边旧版"
+    }
+  },
+  "read_views": {
+    "GET /public/exhibition": "观众端：仅返回当前时刻在场布置与已发布生效展签",
+    "GET /internal/snapshot?at=": "内部：按历史日期（YYYY-MM-DD 或带偏移 ISO 时间）复原当日展柜、文献、数字页面对应关系"
+  },
   "sample": {
     "object_ref": "OBJECT-DEMO",
     "object_kind": "artifact",

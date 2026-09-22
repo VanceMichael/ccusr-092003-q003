@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "node src/server.js",
+    "start": "node src/main.js",
     "migrate": "node scripts/migrate.js",
+    "seed": "node scripts/seed.js",
     "test": "node --test"
   }
 }
